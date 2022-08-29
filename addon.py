@@ -19,6 +19,6 @@
 """
 
 
-from resources.lib.default import * 
+from resources.lib.default import plugin 
 
-Index()
+plugin.run()
