@@ -18,7 +18,9 @@
         along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-
+import xbmc
 from resources.lib.default import plugin 
 
+xbmc.executebuiltin("InhibitScreensaver(true)")
+xbmc.executebuiltin("InhibitIdleShutdown(true)")
 plugin.run()

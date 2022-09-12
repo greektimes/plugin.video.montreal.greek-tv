@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os, routing
-import xbmcvfs, xbmcgui, xbmcplugin, xbmcaddon
+import xbmc, xbmcvfs, xbmcgui, xbmcplugin, xbmcaddon
 
 addon_id       = 'plugin.video.montreal.greek-tv'
 Home           = xbmcvfs.translatePath(xbmcaddon.Addon().getAddonInfo('path'))
 icon           = os.path.join(Home, 'icon.png')
+fanart         = os.path.join(Home, 'fanart.jpg')
 tv_icon        = os.path.join(Home, "resources", "art", 'montreal_tv.png')
 radio_icon     = os.path.join(Home, "resources", "art", 'montreal_radio.png')
-radio_fanart   = os.path.join(Home, "resources", "art", 'montreal_backround.jpg')
+radio_fanart   = os.path.join(Home, "resources", "art", 'montreal_background.jpg')
 
 plugin = routing.Plugin()
 
@@ -17,8 +18,8 @@ RADIO_URL = 'http://live.greekradio.ca:8000/live'
 
 @plugin.route('/')
 def index():
-    addDir("Montreal Greek TV", TV_URL, tv_icon, radio_fanart)
-    addDir("Montreal Greek Radio", RADIO_URL, radio_icon, radio_fanart)
+    addDir("Montreal Greek TV", TV_URL, tv_icon, fanart)
+    addDir("Montreal Greek Radio", RADIO_URL, radio_icon, fanart)
     xbmcplugin.endOfDirectory(plugin.handle)
 
 def addDir(name, url, iconimage, fanart):
@@ -33,7 +34,9 @@ def playlinks(url):
         liz = xbmcgui.ListItem(offscreen=True)
         liz.setProperty('isFolder', 'false')
         if url == RADIO_URL :
+            if xbmc.Player().isPlayingVideo() == True : xbmc.executebuiltin("Action(Stop)")
             liz.setArt({'thumb': radio_icon, "fanart": radio_fanart})
+        else : liz.setArt({'thumb': tv_icon, "fanart": radio_fanart})
         liz.setProperty('IsPlayable','true')
         liz.setPath(url)
         xbmcplugin.setResolvedUrl(plugin.handle, True, liz)
